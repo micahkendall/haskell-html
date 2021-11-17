@@ -21,14 +21,15 @@ runghc blog.hs -> blog.html
 
 #### Requirements
 
-Glasgow Haskell Compiler, Version 8.10.7
+    Glasgow Haskell Compiler, Version 8.10.7
 
-##### For helper scripts
+#### For helper scripts
+
     Node v16.11.0
 
     Npm 8.0.0
 
-    Dependencies
+    Node Dependencies
 
         node-watch ^0.7.2
 
