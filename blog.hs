@@ -27,6 +27,8 @@ blogItemFromList [a,b] = (H5 -< [
     ] $ b)
 blogItems = intercalate "\n" (map blogItemFromList (items))
 
+lineSplit = Hr -< [] $ ""
+
 home = Html -< []
       $ Body -< []
         $ Div -< [

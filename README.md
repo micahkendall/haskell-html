@@ -13,10 +13,15 @@ npm start
 ```
 Open on http://localhost:8080
 
-#### Compiling
+#### Generating file
 
 ```bash
 runghc blog.hs -> blog.html
+```
+
+#### Compiling to binary (requires llvm)
+```bash
+ghc blog.hs
 ```
 
 #### Requirements
