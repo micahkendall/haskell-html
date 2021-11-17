@@ -23,14 +23,13 @@ runghc blog.hs -> blog.html
 
 Glasgow Haskell Compiler, Version 8.10.7
 
-For helper scripts
+##### For helper scripts
+    Node v16.11.0
 
-Node v16.11.0
+    Npm 8.0.0
 
-Npm 8.0.0
+    Dependencies
 
-Dependencies
+        node-watch ^0.7.2
 
-    node-watch ^0.7.2
-
-    ws ^8.2.3
+        ws ^8.2.3
