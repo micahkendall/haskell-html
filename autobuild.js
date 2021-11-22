@@ -15,7 +15,7 @@ http.createServer(function (req, res) {
 
 function injectSrc(html){
   // replace '<html>' with '<html><script src="hotinject.js"></script>'
-  return html.replace("<html >", "<html><script>"+hotinject+"</script>");
+  return html.replace("<html>", "<html><script>"+hotinject+"</script>");
 }
 
 const file_name = "blog.hs"

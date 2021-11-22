@@ -4,37 +4,41 @@ import Data.List
 import Kebab
 
 -- represent different html elements (plan to automatically generate this enum set)
-data RawElement = Html | Body | Div | P | B | H1 | H5 | Li | Span | H3 | A | Hr
+data RawElement = Html | Body | Div | P | B | H1 | H5 | Li | Span | H3 | A | Hr | H6
     deriving (Show)
+type AssignedProperty = (String, String)
+data Element = MkElem RawElement [AssignedProperty] [Element] | String String | Unwrap [Element]
 
 -- automatically splits now, same as above but for css
 data CssProperty = BackgroundColor | Color | FontSize | TextAlign | Width | MarginLeft | MarginTop | Height | Padding | BoxShadow | TextDecoration | TextTransform | FontFamily
     deriving (Show)
 
--- for future type annotations
-type AssignedProperty = (String, String)
-type Element = (RawElement, [AssignedProperty])
-
--- takes a css property, gives corresponding string (using kebab lib I made)
 strFromProp :: CssProperty -> String
 strFromProp = toKebab.show
 
--- similar to above but for html. Easier to do.
-unprops [] = ""
-unprops ((a,b):xs) = a ++ "=\"" ++ b ++ "\" " ++ (unprops xs)
+toString :: RawElement -> String
+toString = map toLower.show
 
--- "open, close" can be under the "where" of the (#) function since they're only helpers anyway. (same for unprops.)
-open a c = "<" ++ (map toLower (show a)) ++ " " ++ (unprops c) ++ ">"
-close a = "</" ++ (map toLower (show a)) ++ ">"
+extraTab = (foldr1 (++)).(map (\x->if (x=='\n') then "\n  "; else [x]))
 
---(#) :: Show a => (a, b) -> String -> String
-(a, c) # b = (open a c) ++ b ++ (close a)
+insertProps [] = ""
+insertProps ((a, b):xs) = " "++a++"=\""++b++"\""
 
--- syntactic sugar for AssignedProperty
---(-->), (-<) // maybe add an operator for objects with no contents? (breaks, hrs.)
-a --> b = (a, b)
-a -< b = ((a, b)#)
+render :: Element -> String
+render (Unwrap x) = ((foldr1 (++)).(map render)) x
+render (String x) = x++""
+render (MkElem x y []) = "<"++(toString x)++(insertProps y)++">" ++ "</"++(toString x)++">"
+render (MkElem x y z) = "\n<"++(toString x)++(insertProps y)++">" ++ extraTab ("\n"++((foldr1 (++)).(map render)) (z))++"\n" ++ "</"++(toString x)++">"
 
--- expanding css list options into a string
+(#) :: RawElement -> [Element] -> Element
+(#) x = MkElem x []
+(#&) x y = (MkElem x y)
+
+--(=->) :: ([Element] -> Element) -> ([Element] -> Element)
+--(=->) (MkElem x y) z = MkElem x (y++z)
+
 css [] = ""
 css ((a,b):xs) = (strFromProp a) ++ ":" ++ b ++ ";" ++ (css xs)
+
+-- ? 
+a --> b = (a, b)

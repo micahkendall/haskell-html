@@ -4,7 +4,9 @@
   "description": "",
   "main": "autobuild.js",
   "scripts": {
-    "start": "node autobuild.js"
+    "start": "node autobuild.js",
+    "build": "runghc blog.hs -> test.html",
+    "build-open": "runghc blog.hs -> test.html; open test.html"
   },
   "author": "",
   "license": "ISC",
